@@ -1,24 +1,3 @@
-/*
-Scripted Importer to import *.gltf files. Currently only supports glTF Embedded
-files. Support for glTF Separate files might be added at a later time. 
-
-Features:
--Reads and processes first node of the glTF file. Currently only Mesh geometry data
-is processed. Support for Animation, Skinning, etc. data may be added in the future.
--Creates a prefab containing:
-    -Gameobject (Main Object)
-    -Mesh (Sub Object)
-    -One or more Materails (Sub Objects)
--Supports meshes with multiple materials.
-
-Note: Child gameobjects are currently not supported. Support may be added in the future.
-
-Future note: To add support for child gameobjects, maybe change the logic a bit so that 
-all the nodes are scanned and the first node that contains children is converted to a 
-gameobject, along with all it's child gameobjects.
-
-*/
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
