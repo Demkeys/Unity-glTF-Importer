@@ -1,5 +1,5 @@
 # Unity-glTF-Importer
-A very basic glTF importer for Unity. I made this for educational purpose so that I can understand the glTF file format better. You are free to use the code in this repo however your like.
+### A very basic glTF importer for Unity. I made this for educational purpose so that I can understand the glTF file format better. You are free to use the code in this repo however your like.
 ----
 This is a Scripted Importer to import \*.gltf files. Currently only supports glTF Embedded files. Support for glTF Separate files and glTF Binary files might be added at a later time. 
 
