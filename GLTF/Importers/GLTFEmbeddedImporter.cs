@@ -143,7 +143,7 @@ public class GLTFEmbeddedImporter : ScriptedImporter
             // VEC3(float,float,float).
             int accessorIndex = glTFRoot.meshes[glTFMeshIndex].primitives[i].attributes.POSITION;
             
-            // If true, this attribute hasn't been assinged, so skip this block.
+            // If false, this attribute hasn't been assinged, so skip this block.
             if(accessorIndex != -1) 
             {
                 bufferViewIndex = glTFRoot.accessors[accessorIndex].bufferView;
@@ -170,7 +170,7 @@ public class GLTFEmbeddedImporter : ScriptedImporter
             // VEC3(float,float,float).
             accessorIndex = glTFRoot.meshes[glTFMeshIndex].primitives[i].attributes.NORMAL;
             
-            // If true, this attribute hasn't been assinged, so skip this block.
+            // If false, this attribute hasn't been assinged, so skip this block.
             if(accessorIndex != -1) 
             {
                 bufferViewIndex = glTFRoot.accessors[accessorIndex].bufferView;
@@ -197,7 +197,7 @@ public class GLTFEmbeddedImporter : ScriptedImporter
             // VEC4(float,float,float,float).
             accessorIndex = glTFRoot.meshes[glTFMeshIndex].primitives[i].attributes.TANGENT;
             
-            // If true, this attribute hasn't been assinged, so skip this block.
+            // If false, this attribute hasn't been assinged, so skip this block.
             if(accessorIndex != -1)
             {
                 bufferViewIndex = glTFRoot.accessors[accessorIndex].bufferView;
@@ -224,7 +224,7 @@ public class GLTFEmbeddedImporter : ScriptedImporter
             // VEC2(float,float).
             accessorIndex = glTFRoot.meshes[glTFMeshIndex].primitives[i].attributes.TEXCOORD_0;
             
-            // If true, this attribute hasn't been assinged, so skip this block.
+            // If false, this attribute hasn't been assinged, so skip this block.
             if(accessorIndex != -1)
             {
                 bufferViewIndex = glTFRoot.accessors[accessorIndex].bufferView;
@@ -250,7 +250,7 @@ public class GLTFEmbeddedImporter : ScriptedImporter
             // Read Indices data from buffer. Indices data type is expected to be Int16.
             accessorIndex = glTFRoot.meshes[glTFMeshIndex].primitives[i].indices;
             
-            // If true, this attribute hasn't been assinged, so skip this block.
+            // If false, this attribute hasn't been assinged, so skip this block.
             if(accessorIndex != -1) 
             {
                 bufferViewIndex = glTFRoot.accessors[accessorIndex].bufferView;
