@@ -18,3 +18,8 @@ This is a Scripted Importer to import \*.gltf files. Currently only supports glT
 - Materials are created, however they cannot be edited, so after the glTF file has been imported, you 
 
 __Future note: To add support for child gameobjects, maybe change the logic a bit so that all the nodes are scanned and the first node that contains children is converted to a gameobject, along with all it's child gameobjects.__
+
+### Usage Instructions:
+Import GLTF folder into your project. This will import the Scripted Importer along with all the other files needed. You can then drag and drop a \*.gltf file into your project and the importer will generate a prefab out of it.
+
+### Tested with Unity 2021.1.0f1.
