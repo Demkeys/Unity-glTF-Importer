@@ -1,7 +1,15 @@
+/*
+Note: This importer is currently using a sort of hackish method for creating assets
+meant to be used in the main asset, for example, materials. SubAssets cannot be edited 
+as they are. There probably is a way to make them editable, but due to time constraints
+I'm implementing this hackish method because it works.
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEditor;
 using UnityEditor.AssetImporters;
 using GLTF;
 using System.IO;
@@ -15,8 +23,21 @@ public class GLTFEmbeddedImporter : ScriptedImporter
     GLTFRoot gLTFRoot;
     byte[][] buffersArray;
 
+    // Used when creating assets that are separate from the main asset. For 
+    // example, materials. 
+    string assetDir = ""; 
+
     public override void OnImportAsset(AssetImportContext ctx)
     {
+        string[] assetPathSplit = assetPath.Split(new char[]{'/'});
+
+        // assetPathSplit.Length-1 excludes the last element, which is 
+        // usually the imported asset file name.
+        for(int i = 0; i < assetPathSplit.Length-1; i++)
+        {
+            assetDir += $"{assetPathSplit[i]}/";
+        }
+
         // fileDir = $"{Application.dataPath}/GLTFAssets";
         // filePathArr = new string[] {
         //     $"{fileDir}/untitled.gltf",         // 0
@@ -100,7 +121,18 @@ public class GLTFEmbeddedImporter : ScriptedImporter
             // mat.SetColor("_Color", UnityEngine.Random.ColorHSV());
 
             goMats.Add(mat);
-            ctx.AddObjectToAsset(mat.name, mat);
+
+            //////////////////////////////////////////////////////////////////////////
+            /*
+            NOTE: This line is a hackish solution to a problem. At the moment I don't 
+            know how to make SubAssets editable so due to time constraints I'm using
+            this method. So instead of materials being created as SubAssets they will
+            be created as individual assets in the same directory as assetPath.
+            */
+            AssetDatabase.CreateAsset(mat, $"{assetDir}{mat.name}.mat");
+            //////////////////////////////////////////////////////////////////////////
+
+            // ctx.AddObjectToAsset(mat.name, mat);
         }
         MeshRenderer goMeshRenderer = go.AddComponent<MeshRenderer>();
         goMeshRenderer.sharedMaterials = goMats.ToArray();
