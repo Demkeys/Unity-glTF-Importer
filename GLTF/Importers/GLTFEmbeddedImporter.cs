@@ -35,7 +35,8 @@ public class GLTFEmbeddedImporter : ScriptedImporter
         // usually the imported asset file name.
         for(int i = 0; i < assetPathSplit.Length-1; i++)
         {
-            assetDir += $"{assetPathSplit[i]}/";
+            assetDir += $"{assetPathSplit[i]}";
+            if(i < assetPathSplit.Length-2) assetDir += "/";
         }
 
         // fileDir = $"{Application.dataPath}/GLTFAssets";
@@ -113,25 +114,44 @@ public class GLTFEmbeddedImporter : ScriptedImporter
         for(int i = 0; i < gLTFRoot.meshes[glTFMeshIndex].primitives.Length; i++)
         {
             int gltfMatIndex = gLTFRoot.meshes[glTFMeshIndex].primitives[i].material;
-            Material mat = new Material(Shader.Find("Standard"));
-            mat.name = gltfMatIndex != -1 ? gLTFRoot.materials[gltfMatIndex].name : $"SomeMat{i}";
+            string matFileName = 
+                gltfMatIndex != -1 ? gLTFRoot.materials[gltfMatIndex].name : $"SomeMat{i}";
+            
+            // Check if asset exists
+            string[] searchResults = AssetDatabase.FindAssets(
+                $"{matFileName} t:material", new string[] {assetDir}
+            );
+
+            Material mat;
+
+            // If asset exists, load material and assign to mat.
+            if(searchResults.Length != 0)
+            {
+                string matPath = AssetDatabase.GUIDToAssetPath(searchResults[0]);
+                mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+            }
+            // Else, create new instance of mat and create new asset of it.
+            else
+            {
+                mat = new Material(Shader.Find("Standard"));
+                //////////////////////////////////////////////////////////////////////////
+                /*
+                NOTE: This line is a hackish solution to a problem. At the moment I don't 
+                know how to make SubAssets editable so due to time constraints I'm using
+                this method. So instead of materials being created as SubAssets they will
+                be created as individual assets in the same directory as assetPath.
+                */
+                AssetDatabase.CreateAsset(mat, $"{assetDir}/{matFileName}.mat");
+                //////////////////////////////////////////////////////////////////////////
+            }
+
+            mat.name = matFileName;
             
             // This line is for debugging purposes. It assigns a random color
             // to the _Color property of the material.
             // mat.SetColor("_Color", UnityEngine.Random.ColorHSV());
 
             goMats.Add(mat);
-
-            //////////////////////////////////////////////////////////////////////////
-            /*
-            NOTE: This line is a hackish solution to a problem. At the moment I don't 
-            know how to make SubAssets editable so due to time constraints I'm using
-            this method. So instead of materials being created as SubAssets they will
-            be created as individual assets in the same directory as assetPath.
-            */
-            AssetDatabase.CreateAsset(mat, $"{assetDir}{mat.name}.mat");
-            //////////////////////////////////////////////////////////////////////////
-
             // ctx.AddObjectToAsset(mat.name, mat);
         }
         MeshRenderer goMeshRenderer = go.AddComponent<MeshRenderer>();
